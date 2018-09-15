@@ -1,4 +1,8 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System.IO;
+using System.Windows;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -22,6 +26,8 @@
 
         private string _filePath;
 
+        private const string _destination = @"D:\Dms\";
+
         private bool _isRemoveFileEnabled;
 
         private string _selectedTypItem;
@@ -38,6 +44,7 @@
             Benutzer = benutzer;
             Erfassungsdatum = DateTime.Now;
             TypItems = ComboBoxItems.Typ;
+            
 
             CmdDurchsuchen = new DelegateCommand(OnCmdDurchsuchen);
             CmdSpeichern = new DelegateCommand(OnCmdSpeichern);
@@ -164,9 +171,43 @@
 
         private void OnCmdSpeichern()
         {
+            FileOp file = new FileOp();
+            if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
+            {
+                if (IsRemoveFileEnabled == true)
+                {
+                    file.MoveFile(_filePath);
+                }
+                else
+                {
+                    file.CopyFile(_filePath);
+                }
+                _navigateBack();
+            }
+            else
+            {
+                MessageBox.Show("Es wurden nicht Alle Pflichtfelder angegeben!");
+            }
             // TODO: Add your Code here
+            /*var tmp = _filePath.LastIndexOf("\");
 
-            _navigateBack();
+            if (_isRemoveFileEnabled = true)
+            {
+                File.Move(_filePath, _destination);
+            }
+            else
+            {
+                File.Copy(_filePath, _destination);
+            }
+            */
+            /* file.copy oder file.move() an ein bestimmtes Ort (Hardcodiert) an Hand Bool _isRemoveFileEnabled
+             - guid generieren für ein neues File filename service für generieren
+             - Bei generierung neuer Filename angeben.
+
+             - vorgehen anhand der AC's der Aufgaben beschreibung...
+             */
+            //_filePath.saveFileDialog.ShowDialog(); 
+            
         }
     }
 }
