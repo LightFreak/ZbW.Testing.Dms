@@ -94,8 +94,8 @@
     <Compile Include="Interfaces\IFile.cs" />
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
-    <Compile Include="Depedencys\DirServices.cs" />
-    <Compile Include="Depedencys\FileNameGenerator.cs" />
+    <Compile Include="Provider\DirServices.cs" />
+    <Compile Include="Provider\FileNameGenerator.cs" />
     <Compile Include="Services\FileOp.cs" />
     <Compile Include="Interfaces\IFileNameGenerator.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

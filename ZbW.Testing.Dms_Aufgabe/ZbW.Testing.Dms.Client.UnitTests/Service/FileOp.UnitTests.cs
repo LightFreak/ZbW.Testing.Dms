@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FakeItEasy;
 using NUnit.Framework;
 using ZbW.Testing.Dms.Client.Fakes;
 using ZbW.Testing.Dms.Client.Services;
@@ -140,14 +141,17 @@ namespace ZbW.Testing.Dms.UnitTests.Service
         public void CheckDestinationDir_CheckDepency_IsValid()
         {
             // arrange
+            //var ocrProviderMock = A.Fake<IOcrProvider>();
             FileOp f = new FileOp();
-            var fileMock = new FileMock();
+            var fileMock = A.Fake<DirServices>();
 
             // act
             f.CheckDestinationDir(fileMock, VALID_Path);
 
             // assert
-            Assert.That(fileMock.CheckDirectoryCalled, Is.True);
+            //A.CallTo(() => ocrProviderMock.Analyze(VALID_PATH)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => fileMock.CheckDirectory(VALID_Path)).MustHaveHappenedOnceExactly();
+            //Assert.That(fileMock.CheckDirectoryCalled, Is.True));
         }
 
         [Test]
