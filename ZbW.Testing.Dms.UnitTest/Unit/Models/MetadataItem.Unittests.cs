@@ -18,6 +18,9 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         private static readonly DateTime INVALID_Date = new DateTime();
         private static readonly DateTime VALID_Date = new DateTime(11 / 09 / 2018);
 
+        //private static readonly DateTime? INVALID_Date? = new DateTime?();
+        //private static readonly DateTime? VALID_Date? = new DateTime?(11 / 09 / 2018);
+
         private const bool INVALID_BOOL = false;
         private const bool VALID_BOOL = true;
 

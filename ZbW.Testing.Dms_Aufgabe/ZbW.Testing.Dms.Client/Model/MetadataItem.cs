@@ -26,10 +26,10 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private string _stichwoerter;
 
-        private DateTime _valutaDatum;
+        private DateTime? _valutaDatum;
 
         public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum,string originalPath, string filename, string extension, string destinationPath,
-                            bool isRemoveFileEnabled, string selectedTypItem, string stichwoerter, DateTime valutaDatum)
+                            bool isRemoveFileEnabled, string selectedTypItem, string stichwoerter, DateTime? valutaDatum)
         {
             _benutzer = benutzer;
             _bezeichnung = bezeichnung;
@@ -152,7 +152,7 @@ namespace ZbW.Testing.Dms.Client.Model
             set { SetProperty(ref _stichwoerter, value); }
         }
 
-        public DateTime ValutaDatum
+        public DateTime? ValutaDatum
         {
             get { return _valutaDatum; }
             set { SetProperty(ref _valutaDatum, value); }

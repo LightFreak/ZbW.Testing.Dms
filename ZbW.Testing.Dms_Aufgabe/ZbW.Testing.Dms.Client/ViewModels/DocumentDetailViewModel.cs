@@ -37,7 +37,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private List<string> _typItems;
 
-        private DateTime _valutaDatum;
+        private DateTime? _valutaDatum;
 
         private MetadataItem _metadata; 
 
@@ -136,7 +136,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         public DelegateCommand CmdSpeichern { get; }
 
-        public DateTime ValutaDatum
+        public DateTime? ValutaDatum
         {
             get
             {
