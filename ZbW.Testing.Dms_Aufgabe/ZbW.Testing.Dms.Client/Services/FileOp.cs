@@ -23,26 +23,34 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public string MoveFile(MetadataItem source)
         {
-            
-            String MyGuid = GenerateFilename(fng,source.Filename);
+            if (CheckDestinationDir(source.Destination) == false)
+            {
+                CreateDestinationDir(source.Destination);
+            }
+            String MyGuid = GenerateFilename(fng, source.Filename, source.Extension);
+            var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
+            File.Copy(source.OriginalPath, newFile);
             //MessageBox.Show(MyGuid);
             return MyGuid;
-
         }
 
         public string CopyFile(MetadataItem source)
         {
-            
-            String MyGuid = GenerateFilename(fng,source.Filename);
-            //File.Copy(source.Filename,source.Destination);
+            if (CheckDestinationDir(source.Destination) == false)
+            {
+                  CreateDestinationDir(source.Destination);
+            }
+            String MyGuid = GenerateFilename(fng,source.Filename,source.Extension);
+            var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
+            File.Copy(source.OriginalPath,newFile);
             //MessageBox.Show(MyGuid);
             return MyGuid;
         }
 
-        internal string GenerateFilename(IFileNameGenerator fileNameGenerator,string filename)
+        internal string GenerateFilename(IFileNameGenerator fileNameGenerator,string filename,string extension)
         {
             var suffixString = fileNameGenerator.GenerateGuid().ToString();
-            return $"{suffixString}{filename}";
+            return $"{suffixString}{filename}.{extension}";
         }
 
         internal string GetFilename(string source)
@@ -73,6 +81,21 @@ namespace ZbW.Testing.Dms.Client.Services
             positionExtension = source.LastIndexOf(".");
             ret = source.Substring(positionExtension + 1);
             return ret;
+        }
+
+        internal bool CheckDestinationDir(string destinationPath)
+        {
+            if(!Directory.Exists(destinationPath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        internal void CreateDestinationDir(string destinationPath)
+        {
+            Directory.CreateDirectory(destinationPath);
         }
 
         //public void GenerateXMLDoc(File file,string generatedGuid)
