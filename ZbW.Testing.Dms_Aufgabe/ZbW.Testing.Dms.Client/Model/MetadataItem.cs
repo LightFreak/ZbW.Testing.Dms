@@ -12,9 +12,11 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private DateTime _erfassungsdatum;
 
-        private string _filePath;
+        private string _filename;
 
-        private static string _destination = @"D:\Dms\";
+        private string _extension;
+
+        private static string _destination;
 
         private bool _isRemoveFileEnabled;
 
@@ -24,13 +26,14 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private DateTime _valutaDatum;
 
-        public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum, string sourcepath, string destinationPath,
+        public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum, string filename, string extension, string destinationPath,
                             bool isRemoveFileEnabled, string selectedTypItem, string stichwoerter, DateTime valutaDatum)
         {
             _benutzer = benutzer;
             _bezeichnung = bezeichnung;
             _erfassungsdatum = erfassungsdatum;
-            _filePath = sourcepath;
+            _filename = filename;
+            _extension = extension;
             _destination = destinationPath;
             _isRemoveFileEnabled = isRemoveFileEnabled;
             _selectedTypItem = selectedTypItem;
@@ -73,15 +76,27 @@ namespace ZbW.Testing.Dms.Client.Model
             }
         }
 
-        public string FilePath
+        public string Filename
         {
             get
             {
-                return _filePath;
+                return _filename;
             }
             set
             {
-                SetProperty(ref _filePath, value);
+                SetProperty(ref _filename, value);
+            }
+        }
+
+        public string Extension
+        {
+            get
+            {
+                return _extension;
+            }
+            set
+            {
+                SetProperty(ref _extension, value);
             }
         }
 
@@ -127,5 +142,7 @@ namespace ZbW.Testing.Dms.Client.Model
             get { return _valutaDatum; }
             set { SetProperty(ref _valutaDatum, value); }
         }
+
+
     }
 }

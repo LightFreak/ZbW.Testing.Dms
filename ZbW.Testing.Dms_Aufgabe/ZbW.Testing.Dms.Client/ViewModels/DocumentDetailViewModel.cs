@@ -177,8 +177,10 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         {
             FileOp file = new FileOp();
             if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
-            {   
-                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,_filePath,_destination,_isRemoveFileEnabled,_selectedTypItem,
+            {
+                var filename = file.GetFilename(_filePath);
+                var extension = file.GetExtension(_filePath);
+                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,filename,extension,_destination,_isRemoveFileEnabled,_selectedTypItem,
                                                 _stichwoerter,_valutaDatum);
                 if (IsRemoveFileEnabled == true)
                 {

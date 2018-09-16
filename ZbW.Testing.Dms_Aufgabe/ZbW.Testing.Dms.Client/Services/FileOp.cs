@@ -23,7 +23,7 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public string MoveFile(MetadataItem source)
         {
-            var filename = GetFilename(source.FilePath);
+            var filename = GetFilename(source.Filename);
             String MyGuid = GenerateFilename(fng,filename);
             //MessageBox.Show(MyGuid);
             return MyGuid;
@@ -32,7 +32,7 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public string CopyFile(MetadataItem source)
         {
-            var filename = GetFilename(source.FilePath);
+            var filename = GetFilename(source.Filename);
             String MyGuid = GenerateFilename(fng,filename);
             //MessageBox.Show(MyGuid);
             return MyGuid;
