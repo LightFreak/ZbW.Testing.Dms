@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ZbW.Testing.Dms.Client.Model;
 
 
 namespace ZbW.Testing.Dms.Client.Services
@@ -20,29 +21,30 @@ namespace ZbW.Testing.Dms.Client.Services
         }
 
 
-        public string MoveFile(string source)
+        public string MoveFile(MetadataItem source)
         {
-            
-            String MyGuid = GenerateFilename(fng,source);
+            var filename = GetFilename(source.FilePath);
+            String MyGuid = GenerateFilename(fng,filename);
             //MessageBox.Show(MyGuid);
             return MyGuid;
 
         }
 
-        public string CopyFile(string source)
+        public string CopyFile(MetadataItem source)
         {
-            String MyGuid = GenerateFilename(fng,source);
+            var filename = GetFilename(source.FilePath);
+            String MyGuid = GenerateFilename(fng,filename);
             //MessageBox.Show(MyGuid);
             return MyGuid;
         }
 
-        public string GenerateFilename(IFileNameGenerator fileNameGenerator,string filename)
+        internal string GenerateFilename(IFileNameGenerator fileNameGenerator,string filename)
         {
             var suffixString = fileNameGenerator.GenerateGuid().ToString();
             return $"{suffixString}{filename}";
         }
 
-        public string GetFilename(string source)
+        internal string GetFilename(string source)
         {
             string ret ="";
             var position = 0;
@@ -61,7 +63,7 @@ namespace ZbW.Testing.Dms.Client.Services
             return ret;
         }
 
-        public string GetExtension(string source)
+        internal string GetExtension(string source)
         {
             string ret = "";
            

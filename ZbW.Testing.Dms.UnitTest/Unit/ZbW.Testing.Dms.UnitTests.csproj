@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\MetadataItem.Unittests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\FileOp.UnitTests.cs" />
     <Compile Include="ViewModels\DocumentDetailVielModelTests.cs" />

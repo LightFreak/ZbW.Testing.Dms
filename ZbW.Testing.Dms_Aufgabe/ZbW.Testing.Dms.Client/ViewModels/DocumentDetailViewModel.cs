@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using ZbW.Testing.Dms.Client.Model;
 using ZbW.Testing.Dms.Client.Services;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
@@ -36,7 +37,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private List<string> _typItems;
 
-        private DateTime? _valutaDatum;
+        private DateTime _valutaDatum;
+
+        private MetadataItem _metadata; 
 
         public DocumentDetailViewModel(string benutzer, Action navigateBack)
         {
@@ -44,6 +47,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             Benutzer = benutzer;
             Erfassungsdatum = DateTime.Now;
             TypItems = ComboBoxItems.Typ;
+            
             
 
             CmdDurchsuchen = new DelegateCommand(OnCmdDurchsuchen);
@@ -132,7 +136,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         public DelegateCommand CmdSpeichern { get; }
 
-        public DateTime? ValutaDatum
+        public DateTime ValutaDatum
         {
             get
             {
@@ -173,14 +177,16 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         {
             FileOp file = new FileOp();
             if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
-            {
+            {   
+                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,_filePath,_destination,_isRemoveFileEnabled,_selectedTypItem,
+                                                _stichwoerter,_valutaDatum);
                 if (IsRemoveFileEnabled == true)
                 {
-                    file.MoveFile(_filePath);
+                    file.MoveFile(_metadata);
                 }
                 else
                 {
-                    file.CopyFile(_filePath);
+                    file.CopyFile(_metadata);
                 }
                 _navigateBack();
             }
