@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ZbW.Testing.Dms.Client.Interfaces;
 using ZbW.Testing.Dms.Client.Model;
 
 
@@ -13,19 +14,22 @@ namespace ZbW.Testing.Dms.Client.Services
     internal class FileOp 
     {
         private readonly IFileNameGenerator _fileNameGenerator;
+        
         private FileNameGenerator fng;
+        private DirServices dir;
 
         public FileOp()
         {
             fng = new FileNameGenerator();
+            dir = new DirServices();
         }
 
 
         public string MoveFile(MetadataItem source)
         {
-            if (CheckDestinationDir(source.Destination) == false)
+            if (CheckDestinationDir(dir,source.Destination) == false)
             {
-                CreateDestinationDir(source.Destination);
+                CreateDestinationDir(dir,source.Destination);
             }
             String MyGuid = GenerateFilename(fng, source.Filename, source.Extension);
             var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
@@ -36,9 +40,9 @@ namespace ZbW.Testing.Dms.Client.Services
 
         public string CopyFile(MetadataItem source)
         {
-            if (CheckDestinationDir(source.Destination) == false)
+            if (CheckDestinationDir(dir,source.Destination) == false)
             {
-                  CreateDestinationDir(source.Destination);
+                  CreateDestinationDir(dir,source.Destination);
             }
             String MyGuid = GenerateFilename(fng,source.Filename,source.Extension);
             var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
@@ -83,19 +87,14 @@ namespace ZbW.Testing.Dms.Client.Services
             return ret;
         }
 
-        internal bool CheckDestinationDir(string destinationPath)
+        internal bool CheckDestinationDir(IFile dir, string destinationPath)
         {
-            if(!Directory.Exists(destinationPath))
-            {
-                return false;
-            }
-
-            return true;
+            return dir.CheckDirectory(destinationPath);
         }
 
-        internal void CreateDestinationDir(string destinationPath)
+        internal void CreateDestinationDir(IFile dir,string destinationPath)
         {
-            Directory.CreateDirectory(destinationPath);
+            dir.CreateDirectory(destinationPath);
         }
 
         //public void GenerateXMLDoc(File file,string generatedGuid)

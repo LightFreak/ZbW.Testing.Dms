@@ -63,18 +63,18 @@ namespace Unit.ViewModels
             Assert.AreEqual(result, VALID_USER);
         }
 
-        [Test]
-        public void OnComandLogin_Check_CallToMainView()
-        {
-            //arrange
-            var loginViewModel = new LoginViewModel(null);
+        //[Test]
+        //public void OnComandLogin_Check_CallToMainView()
+        //{
+        //    //arrange
+        //    var loginViewModel = new LoginViewModel(null);
 
-            //act
-            //var System;
-            var result = loginViewModel.Benutzername;
+        //    //act
+        //    //var System;
+        //    var result = loginViewModel.Benutzername;
 
-            //assert
-            Assert.AreEqual(result, VALID_USER);
-        }
+        //    //assert
+        //    Assert.AreEqual(result, VALID_USER);
+        //}
 }
 }

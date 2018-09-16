@@ -29,10 +29,10 @@ namespace ZbW.Testing.Dms.UnitTests.Service
             
             var fileNameGeneratorStub = new FileNameGeneratorStub(sampleGuid);
             //Act
-            var result = f.GenerateFilename(fileNameGeneratorStub,VALID_Filename);
+            var result = f.GenerateFilename(fileNameGeneratorStub,VALID_Filename,VALID_Extension);
 
             //Assert
-            var expectedResult = $"{sampleGuid}{VALID_Filename}";
+            var expectedResult = $"{sampleGuid}{VALID_Filename}.{VALID_Extension}";
             Assert.AreEqual(result,expectedResult);
         }
 
@@ -71,10 +71,10 @@ namespace ZbW.Testing.Dms.UnitTests.Service
 
             var fileNameGeneratorStub = new FileNameGeneratorStub(sampleGuid);
             //Act
-            var result = f.GenerateFilename(fileNameGeneratorStub, INVALID_Filename);
+            var result = f.GenerateFilename(fileNameGeneratorStub, INVALID_Filename,INVALID_Extension);
 
             //Assert
-            var expectedResult = $"{sampleGuid}{INVALID_Filename}";
+            var expectedResult = $"{sampleGuid}{INVALID_Filename}.{INVALID_Extension}";
             Assert.AreEqual(result, expectedResult);
         }
 
@@ -102,6 +102,66 @@ namespace ZbW.Testing.Dms.UnitTests.Service
 
             //Assert
             Assert.AreEqual(result, INVALID_Extension);
+        }
+
+        [Test]
+        public void CheckDestinationDir_Returns_Exists()
+        {
+            //Arrange
+            FileOp f = new FileOp();
+            var destiny = "D:\\dms\\";
+
+            var fileStub = new FileStub(destiny);
+
+            //Act
+            var result = f.CheckDestinationDir(fileStub,destiny);
+
+            //Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void CheckDestinationDir_Returns_DoesntExists()
+        {
+            //Arrange
+            FileOp f = new FileOp();
+            var destiny = "D:\\dms\\";
+
+            var fileStub = new FileStub(destiny);
+
+            //Act
+            var result = f.CheckDestinationDir(fileStub, VALID_Path);
+
+            //Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CheckDestinationDir_CheckDepency_IsValid()
+        {
+            // arrange
+            FileOp f = new FileOp();
+            var fileMock = new FileMock();
+
+            // act
+            f.CheckDestinationDir(fileMock, VALID_Path);
+
+            // assert
+            Assert.That(fileMock.CheckDirectoryCalled, Is.True);
+        }
+
+        [Test]
+        public void CreateDir_CheckDepency_IsValid()
+        {
+            // arrange
+            FileOp f = new FileOp();
+            var fileMock = new FileMock();
+
+            // act
+            f.CreateDestinationDir(fileMock, VALID_Path);
+
+            // assert
+            Assert.That(fileMock.CreateDirectoryCalled, Is.True);
         }
 
         //[Test]
