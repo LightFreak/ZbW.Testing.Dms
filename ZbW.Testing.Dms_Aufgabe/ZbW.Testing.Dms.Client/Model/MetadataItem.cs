@@ -12,6 +12,8 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private DateTime _erfassungsdatum;
 
+        private string _orignalPath;
+
         private string _filename;
 
         private string _extension;
@@ -26,12 +28,13 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private DateTime _valutaDatum;
 
-        public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum, string filename, string extension, string destinationPath,
+        public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum,string originalPath, string filename, string extension, string destinationPath,
                             bool isRemoveFileEnabled, string selectedTypItem, string stichwoerter, DateTime valutaDatum)
         {
             _benutzer = benutzer;
             _bezeichnung = bezeichnung;
             _erfassungsdatum = erfassungsdatum;
+            _orignalPath = originalPath;
             _filename = filename;
             _extension = extension;
             _destination = destinationPath;
@@ -73,6 +76,18 @@ namespace ZbW.Testing.Dms.Client.Model
             set
             {
                 SetProperty(ref _erfassungsdatum, value);
+            }
+        }
+
+        public string OriginalPath
+        {
+            get
+            {
+                return _orignalPath;
+            }
+            set
+            {
+                SetProperty(ref _orignalPath, value);
             }
         }
 
@@ -143,6 +158,7 @@ namespace ZbW.Testing.Dms.Client.Model
             set { SetProperty(ref _valutaDatum, value); }
         }
 
+        //public
 
     }
 }

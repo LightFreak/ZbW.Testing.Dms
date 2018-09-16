@@ -180,7 +180,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             {
                 var filename = file.GetFilename(_filePath);
                 var extension = file.GetExtension(_filePath);
-                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,filename,extension,_destination,_isRemoveFileEnabled,_selectedTypItem,
+                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,_filePath,filename,extension,_destination,_isRemoveFileEnabled,_selectedTypItem,
                                                 _stichwoerter,_valutaDatum);
                 if (IsRemoveFileEnabled == true)
                 {
