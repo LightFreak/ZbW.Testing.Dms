@@ -33,20 +33,25 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Typ"/>
             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TypItems}" SelectedItem="{Binding SelectedTypItem}"/>
 
-            <Button Grid.Row="0" Grid.Column="5" Content="Suchen"/>
-            <Button Grid.Row="1" Grid.Column="5" Content="Reset"/>
+            <Button Grid.Row="0" Grid.Column="5" Content="Suchen" Command="{Binding CmdSuchen}"/>
+            <Button Grid.Row="1" Grid.Column="5" Content="Reset" Command="{Binding CmdReset}"/>
         </Grid>
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding FilteredMetadataItems}"
                   SelectedItem="{Binding SelectedMetadataItem}"
-                  AutoGenerateColumns="True">
+                  AutoGenerateColumns="False">
             <!--TODO: Remove AutoGenerateColumns="True" and specify your own columns -->
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Header="Typ" Binding="{Binding Typ}"/>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Benutzer" Binding="{Binding Benutzer}"/>
+                <DataGridTextColumn Header="Hinzugefügt am:" Binding="{Binding Erfassungsdatum}"/>
+                <DataGridTextColumn Header="Typ" Binding="{Binding SelectedTypItem}"/>
                 <DataGridTextColumn Header="Bezeichnung" Binding="{Binding Bezeichnung}"/>
-            </DataGrid.Columns>-->
+                <DataGridTextColumn Header="Dateiname" Binding="{Binding Filename}"/>
+                <DataGridTextColumn Header="Dateityp" Binding="{Binding Extension}"/>
+                <DataGridTextColumn Header="Stichwoerter" Binding="{Binding Stichwoerter}"/>
+            </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100"/>
+        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Content="Öffnen" Width="100" Command="{Binding CmdOeffnen}"/>
     </Grid>
 </UserControl>

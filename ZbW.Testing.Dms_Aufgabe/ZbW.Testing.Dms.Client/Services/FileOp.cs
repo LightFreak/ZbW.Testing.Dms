@@ -5,56 +5,58 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 using ZbW.Testing.Dms.Client.Interfaces;
 using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Properties;
+using ZbW.Testing.Dms.Client.Provider;
 
 
 namespace ZbW.Testing.Dms.Client.Services
 {
+    
     internal class FileOp 
     {
-        private readonly IFileNameGenerator _fileNameGenerator;
-        
-        private FileNameGenerator fng;
-        private DirServices dir;
+        private string _target;
+        private static readonly IList<string> DirectoryFolder = new List<string>();
+
+        //private FileNameGenerator _fng;
+        private FileServices _file;
+        private XmlService _xml;
 
         public FileOp()
         {
-            fng = new FileNameGenerator();
-            dir = new DirServices();
+            _target = Settings.Default.DefaultRepo;
+            _file = new FileServices();
+            _xml = new XmlService();
+            Guid = new FileNameGenerator();
         }
 
-
-        public string MoveFile(MetadataItem source)
+        internal FileServices FileService { private get; set; }
+        internal XmlService Xml { private get; set; }
+        internal FileNameGenerator Guid {private get; set; }
+        
+        public void CopyFile(MetadataItem source, bool fileRemove)
         {
-            if (CheckDestinationDir(dir,source.Destination) == false)
-            {
-                CreateDestinationDir(dir,source.Destination);
-            }
-            String MyGuid = GenerateFilename(fng, source.Filename, source.Extension);
-            var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
-            File.Copy(source.OriginalPath, newFile);
-            //MessageBox.Show(MyGuid);
-            return MyGuid;
-        }
-
-        public string CopyFile(MetadataItem source)
-        {
-            if (CheckDestinationDir(dir,source.Destination) == false)
-            {
-                  CreateDestinationDir(dir,source.Destination);
-            }
-            String MyGuid = GenerateFilename(fng,source.Filename,source.Extension);
-            var newFile = $"{source.Destination}\\{source.Filename}.{source.Extension}";
+            source.Destination = _target;
+            SetDestinationDir(_file, source.ValutaYear, _target);
+            source.Destination = Path.Combine(_target, source.ValutaYear);
+            String[] MyGuid = GenerateFilename(source.Filename,source.Extension);
+            source.MetaDataFileName = MyGuid[1];
+            source.ContentFilePath = $"{source.Destination}\\{MyGuid[0]}";
+            _xml.MetadataItemToXml(source, source.Destination);
+            var newFile = source.ContentFilePath;
             File.Copy(source.OriginalPath,newFile);
-            //MessageBox.Show(MyGuid);
-            return MyGuid;
+            
         }
 
-        internal string GenerateFilename(IFileNameGenerator fileNameGenerator,string filename,string extension)
+        internal string[] GenerateFilename(string filename, string extension)
         {
-            var suffixString = fileNameGenerator.GenerateGuid().ToString();
-            return $"{suffixString}{filename}.{extension}";
+            string[] result = new string[2];
+            var suffixString = Guid.NewGuid().ToString();
+            result[0] = $"{suffixString}_{filename}_Content.{extension}";
+            result[1] = $"{suffixString}_{filename}_Metadata.xml";
+            return result;
         }
 
         internal string GetFilename(string source)
@@ -86,22 +88,28 @@ namespace ZbW.Testing.Dms.Client.Services
             ret = source.Substring(positionExtension + 1);
             return ret;
         }
-
-        internal bool CheckDestinationDir(IFile dir, string destinationPath)
+        
+        internal void SetDestinationDir(IFile dir, string year, string target)
         {
-            return dir.CheckDirectory(destinationPath);
+            if (dir.SetDestinationDir(year, target))
+            {
+                DirectoryFolder.Add(year);
+            }
         }
 
-        internal void CreateDestinationDir(IFile dir,string destinationPath)
+        public IList<MetadataItem> LoadMetadata()
         {
-            dir.CreateDirectory(destinationPath);
+            var metadataFile = GetAllFiles();
+            var metadataList = _xml.XmlToMetadataItems(metadataFile);
+            return metadataList;
         }
 
-        //public void GenerateXMLDoc(File file,string generatedGuid)
-        //{
+        private IList<string> GetAllFiles()
+        {
 
-        //}
-
-
+            var metadataFile = _file.GetAllFiles(DirectoryFolder, _target);
+            
+            return metadataFile;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using System.Windows.Media.TextFormatting;
 using ZbW.Testing.Dms.Client.Model;
 using ZbW.Testing.Dms.Client.Services;
 
@@ -26,9 +27,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private DateTime _erfassungsdatum;
 
         private string _filePath;
-
-        private const string _destination = @"D:\Dms\";
-
+        
         private bool _isRemoveFileEnabled;
 
         private string _selectedTypItem;
@@ -39,7 +38,11 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private DateTime? _valutaDatum;
 
-        private MetadataItem _metadata; 
+        private MetadataItem _metadata;
+
+        private string _extension;
+
+        private string _filename;
 
         public DocumentDetailViewModel(string benutzer, Action navigateBack)
         {
@@ -162,6 +165,35 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             }
         }
 
+        public string Extension
+        {
+            get
+            {
+                return _extension;
+            }
+
+            set
+            {
+                SetProperty(ref _extension, value);
+            }
+        }
+
+        public string Filename
+        {
+            get
+            {
+                return _filename;
+            }
+
+            set
+            {
+                SetProperty(ref _filename, value);
+            }
+        }
+
+
+
+
         private void OnCmdDurchsuchen()
         {
             var openFileDialog = new OpenFileDialog();
@@ -178,44 +210,35 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             FileOp file = new FileOp();
             if (Bezeichnung != null && ValutaDatum != null && TypItems != null)
             {
-                var filename = file.GetFilename(_filePath);
-                var extension = file.GetExtension(_filePath);
-                _metadata = new MetadataItem(_benutzer,_bezeichnung,_erfassungsdatum,_filePath,filename,extension,_destination,_isRemoveFileEnabled,_selectedTypItem,
-                                                _stichwoerter,_valutaDatum);
-                if (IsRemoveFileEnabled == true)
-                {
-                    file.MoveFile(_metadata);
-                }
-                else
-                {
-                    file.CopyFile(_metadata);
-                }
+                _filename = file.GetFilename(_filePath);
+                _extension = file.GetExtension(_filePath);
+               
+                file.CopyFile(createMetadataItem(), IsRemoveFileEnabled);
+               
                 _navigateBack();
             }
             else
             {
                 MessageBox.Show("Es wurden nicht Alle Pflichtfelder angegeben!");
             }
-            // TODO: Add your Code here
-            /*var tmp = _filePath.LastIndexOf("\");
-
-            if (_isRemoveFileEnabled = true)
-            {
-                File.Move(_filePath, _destination);
-            }
-            else
-            {
-                File.Copy(_filePath, _destination);
-            }
-            */
-            /* file.copy oder file.move() an ein bestimmtes Ort (Hardcodiert) an Hand Bool _isRemoveFileEnabled
-             - guid generieren für ein neues File filename service für generieren
-             - Bei generierung neuer Filename angeben.
-
-             - vorgehen anhand der AC's der Aufgaben beschreibung...
-             */
-            //_filePath.saveFileDialog.ShowDialog(); 
             
+        }
+
+        private MetadataItem createMetadataItem()
+        {
+            MetadataItem meta = new MetadataItem();
+            meta.Benutzer = _benutzer;
+            meta.Bezeichnung = _bezeichnung;
+            meta.Erfassungsdatum = _erfassungsdatum;
+            meta.Extension = _extension;
+            meta.Filename = _filename;
+            meta.OriginalPath = _filePath;
+            meta.SelectedTypItem = _selectedTypItem;
+            meta.ValutaDatum = _valutaDatum;
+            var temp = _valutaDatum.GetValueOrDefault();
+            meta.ValutaYear =  temp.Year.ToString();
+            return meta;
+
         }
     }
 }

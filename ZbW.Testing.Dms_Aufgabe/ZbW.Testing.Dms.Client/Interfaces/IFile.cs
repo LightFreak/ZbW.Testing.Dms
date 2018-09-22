@@ -9,9 +9,9 @@ namespace ZbW.Testing.Dms.Client.Interfaces
 {
     public interface IFile
     {
-        bool CheckDirectory(string destination);
+        bool SetDestinationDir(string year, string target);
 
-        void CreateDirectory(string destination);
+        IList<string> GetAllFiles(IList<string> FolderList,string _target);
     }
 
 

@@ -1,4 +1,6 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using ZbW.Testing.Dms.Client.Properties;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Windows;
 
@@ -28,6 +30,11 @@
         {
             get
             {
+                if (string.IsNullOrEmpty(_benutzername))
+                {
+                    return Settings.Default.DefaultUser;
+                }
+
                 return _benutzername;
             }
 

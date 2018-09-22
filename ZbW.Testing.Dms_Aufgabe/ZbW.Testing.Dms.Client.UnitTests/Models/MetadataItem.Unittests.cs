@@ -28,7 +28,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyBenutzer_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Benutzer = VALID_String;
@@ -41,7 +41,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyBezeichnung_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Bezeichnung = VALID_String;
@@ -54,7 +54,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyErfassungsdatum_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Erfassungsdatum = VALID_Date;
@@ -67,7 +67,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyOriginalPath_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.OriginalPath = VALID_String;
@@ -80,7 +80,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyFilename_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Filename = VALID_String;
@@ -93,7 +93,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyExtension_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Extension = VALID_String;
@@ -106,7 +106,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyDestination_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Destination = VALID_String;
@@ -115,24 +115,13 @@ namespace ZbW.Testing.Dms.UnitTests.Models
             Assert.AreEqual(m.Destination, VALID_String);
         }
 
-        [Test]
-        public void MetadataItem_setPropertyIsRemoveFileEnable_isValid()
-        {
-            //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
 
-            //Act
-            m.IsRemoveFileEnable = VALID_BOOL;
-
-            ////Assert
-            Assert.AreEqual(m.IsRemoveFileEnable, VALID_BOOL);
-        }
 
         [Test]
         public void MetadataItem_setPropertySelectedTypItem_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.SelectedTypItem = VALID_String;
@@ -145,7 +134,7 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyStichwoerter_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.Stichwoerter = VALID_String;
@@ -158,13 +147,52 @@ namespace ZbW.Testing.Dms.UnitTests.Models
         public void MetadataItem_setPropertyValutaDatum_isValid()
         {
             //Arrange
-            MetadataItem m = new MetadataItem(INVALID_String, INVALID_String, INVALID_Date, INVALID_String, INVALID_String, INVALID_String, INVALID_String, INVALID_BOOL, INVALID_String, INVALID_String, INVALID_Date);
+            MetadataItem m = new MetadataItem();
 
             //Act
             m.ValutaDatum = VALID_Date;
 
             ////Assert
             Assert.AreEqual(m.ValutaDatum, VALID_Date);
+        }
+
+        [Test]
+        public void MetadataItem_setPropertyContentFilePath_isValid()
+        {
+            //Arrange
+            MetadataItem m = new MetadataItem();
+
+            //Act
+            m.ContentFilePath = VALID_String;
+
+            ////Assert
+            Assert.AreEqual(m.ContentFilePath, VALID_String);
+        }
+
+        [Test]
+        public void MetadataItem_setPropertyMetaDataFileName_isValid()
+        {
+            //Arrange
+            MetadataItem m = new MetadataItem();
+
+            //Act
+            m.MetaDataFileName = VALID_String;
+
+            ////Assert
+            Assert.AreEqual(m.MetaDataFileName, VALID_String);
+        }
+
+        [Test]
+        public void MetadataItem_setPropertyValutaYear_isValid()
+        {
+            //Arrange
+            MetadataItem m = new MetadataItem();
+
+            //Act
+            m.ValutaYear = VALID_String;
+
+            ////Assert
+            Assert.AreEqual(m.ValutaYear, VALID_String);
         }
     }
 }

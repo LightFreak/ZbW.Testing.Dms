@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FakeItEasy;
+﻿using FakeItEasy;
 using NUnit.Framework;
-using ZbW.Testing.Dms.Client.Fakes;
+
+using ZbW.Testing.Dms.Client.Interfaces;
+using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Provider;
 using ZbW.Testing.Dms.Client.Services;
 
 namespace ZbW.Testing.Dms.UnitTests.Service
@@ -16,25 +14,67 @@ namespace ZbW.Testing.Dms.UnitTests.Service
         private const string VALID_Path= @"D:\ZbW\4_Semester\Software\Testz.zip";
         private const string VALID_Filename = "Testz";
         private const string VALID_Extension = "zip";
+        private const string VALID_Year = "2000";
 
         private const string INVALID_Path = "";
         private const string INVALID_Filename = "";
         private const string INVALID_Extension = "";
+        private const string INVALID_Year = "";
+
+        private  MetadataItem meta1;
+
 
         [Test]
-        public void GenerateFileNAme_Returns_ValidFilename()
+        public void GenerateFilename_Default_CallNewGuidCorrect()
+        {
+            // arrange
+            var fileOp = new FileOp();
+            var fngServiceMock = A.Fake<FileNameGenerator>();
+            fileOp.Guid = fngServiceMock;
+
+            // act
+            fileOp.GenerateFilename(VALID_Filename,VALID_Extension);
+
+            // assert
+            A.CallTo(() => fngServiceMock.NewGuid()).MustHaveHappenedOnceExactly();
+        }
+
+        [Test]
+        public void GenerateFilename_Returns_ValidFilename()
         {
             //Arrange
             FileOp f= new FileOp();
             var sampleGuid = "6a715354-534b-47e1-9df3-2f77d0128040";
+            var fileNameGeneratorStub = A.Fake<FileNameGenerator>();
+            f.Guid = fileNameGeneratorStub;
+            A.CallTo(() => fileNameGeneratorStub.NewGuid()).Returns(sampleGuid);
             
-            var fileNameGeneratorStub = new FileNameGeneratorStub(sampleGuid);
             //Act
-            var result = f.GenerateFilename(fileNameGeneratorStub,VALID_Filename,VALID_Extension);
+            string[] result = new string[2];
+            result = f.GenerateFilename(VALID_Filename,VALID_Extension);
 
             //Assert
-            var expectedResult = $"{sampleGuid}{VALID_Filename}.{VALID_Extension}";
-            Assert.AreEqual(result,expectedResult);
+            string[] expectedResult = new string[2];
+            expectedResult[0] = $"{sampleGuid}_{VALID_Filename}_Content.{VALID_Extension}";
+            expectedResult[1] = $"{sampleGuid}_{VALID_Filename}_Metadata.xml";
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void GenerateFileName_Returns_InValidFilename()
+        {
+            //Arrange
+            FileOp f = new FileOp();
+            var sampleGuid = "6a715354-534b-47e1-9df3-2f77d0128040";
+            var fileNameGeneratorStub = A.Fake<IFileNameGenerator>();
+            A.CallTo(() => fileNameGeneratorStub.NewGuid()).Returns($"{sampleGuid}{INVALID_Filename}.{INVALID_Extension}");
+
+            //Act
+            var result = fileNameGeneratorStub.NewGuid();
+
+            //Assert
+            var expectedResult = $"{sampleGuid}{INVALID_Filename}.{INVALID_Extension}";
+            Assert.AreEqual(result, expectedResult);
         }
 
         [Test]
@@ -62,23 +102,7 @@ namespace ZbW.Testing.Dms.UnitTests.Service
             //Assert
             Assert.AreEqual(result, VALID_Extension);
         }
-
-        [Test]
-        public void GenerateFileNAme_Returns_InValidFilename()
-        {
-            //Arrange
-            FileOp f = new FileOp();
-            var sampleGuid = "6a715354-534b-47e1-9df3-2f77d0128040";
-
-            var fileNameGeneratorStub = new FileNameGeneratorStub(sampleGuid);
-            //Act
-            var result = f.GenerateFilename(fileNameGeneratorStub, INVALID_Filename,INVALID_Extension);
-
-            //Assert
-            var expectedResult = $"{sampleGuid}{INVALID_Filename}.{INVALID_Extension}";
-            Assert.AreEqual(result, expectedResult);
-        }
-
+        
         [Test]
         public void GetFilename_Returns_INValidFilename()
         {
@@ -106,92 +130,51 @@ namespace ZbW.Testing.Dms.UnitTests.Service
         }
 
         [Test]
-        public void CheckDestinationDir_Returns_Exists()
-        {
-            //Arrange
-            FileOp f = new FileOp();
-            var destiny = "D:\\dms\\";
-
-            var fileStub = new FileStub(destiny);
-
-            //Act
-            var result = f.CheckDestinationDir(fileStub,destiny);
-
-            //Assert
-            Assert.IsTrue(result);
-        }
-
-        [Test]
-        public void CheckDestinationDir_Returns_DoesntExists()
-        {
-            //Arrange
-            FileOp f = new FileOp();
-            var destiny = "D:\\dms\\";
-
-            var fileStub = new FileStub(destiny);
-
-            //Act
-            var result = f.CheckDestinationDir(fileStub, VALID_Path);
-
-            //Assert
-            Assert.IsFalse(result);
-        }
-
-        [Test]
-        public void CheckDestinationDir_CheckDepency_IsValid()
-        {
-            // arrange
-            //var ocrProviderMock = A.Fake<IOcrProvider>();
-            FileOp f = new FileOp();
-            var fileMock = A.Fake<DirServices>();
-
-            // act
-            f.CheckDestinationDir(fileMock, VALID_Path);
-
-            // assert
-            //A.CallTo(() => ocrProviderMock.Analyze(VALID_PATH)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => fileMock.CheckDirectory(VALID_Path)).MustHaveHappenedOnceExactly();
-            //Assert.That(fileMock.CheckDirectoryCalled, Is.True));
-        }
-
-        [Test]
-        public void CreateDir_CheckDepency_IsValid()
+        public void LoadMetadata_default_ReturnsCorrectList()
         {
             // arrange
             FileOp f = new FileOp();
-            var fileMock = new FileMock();
+
 
             // act
-            f.CreateDestinationDir(fileMock, VALID_Path);
 
             // assert
-            Assert.That(fileMock.CreateDirectoryCalled, Is.True);
         }
 
         //[Test]
-        //public void MoveFile_Returns_ValidFilename()
+        //public void CheckDestinationDir_Returns_DoesntExists()
         //{
         //    //Arrange
-        //    FileOp f = new FileOp();
+        //    var fileStub = A.Fake<IFile>();
+        //    A.CallTo(() => fileStub.SetDestinationDir()).returns(false);
 
         //    //Act
-        //    var result = f.GetFilename(VALID_Path);
+        //    var result = fileStub.SetDestinationDir(VALID_Year, INVALID_Path);
 
         //    //Assert
-        //    Assert.AreEqual(result, VALID_Filename);
+        //    Assert.That(result, Is.False);
+
         //}
 
-        //[Test]
-        //public void GetFilename_Returns_ValidFilename()
-        //{
-        //    //Arrange
-        //    FileOp f = new FileOp();
 
-        //    //Act
-        //    var result = f.GetFilename(VALID_Path);
 
-        //    //Assert
-        //    Assert.AreEqual(result, VALID_Filename);
-        //}
+
+
+
+
+        // arrange
+        //var ocrProviderStub = A.Fake<IOcrProvider>();
+        //A.CallTo(() => ocrProviderStub.Analyze(VALID_PATH)).Returns(new AnalyzeResult(FULLTEXT_VALUE, QR_CODE_VALUE));
+
+        //var analyzerViewModel = new AnalyzerViewModel(ocrProviderStub);
+        //analyzerViewModel.FilePath = VALID_PATH;
+
+        //// act
+        //analyzerViewModel.CmdAnalyze.Execute();
+
+        //// assert
+        //Assert.That(analyzerViewModel.ExtractedText, Is.EqualTo(FULLTEXT_VALUE));
+        //Assert.That(analyzerViewModel.QrCodeValue, Is.EqualTo(QR_CODE_VALUE));
+
     }
 }

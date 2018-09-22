@@ -88,13 +88,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Fakes\FileMock.cs" />
-    <Compile Include="Fakes\FileNameGeneratorStub.cs" />
-    <Compile Include="Fakes\FileStub.cs" />
     <Compile Include="Interfaces\IFile.cs" />
+    <Compile Include="Interfaces\IXmlService.cs" />
     <Compile Include="Model\MetadataItem.cs" />
+    <Compile Include="Provider\XmlService.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
-    <Compile Include="Provider\DirServices.cs" />
+    <Compile Include="Provider\FileServices.cs" />
     <Compile Include="Provider\FileNameGenerator.cs" />
     <Compile Include="Services\FileOp.cs" />
     <Compile Include="Interfaces\IFileNameGenerator.cs" />
@@ -160,7 +159,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Key.ico" />

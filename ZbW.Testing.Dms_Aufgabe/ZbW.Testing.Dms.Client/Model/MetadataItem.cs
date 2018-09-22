@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace ZbW.Testing.Dms.Client.Model
 {
-    internal class MetadataItem : BindableBase
+    public class MetadataItem : BindableBase
     {
         private string _benutzer;
 
@@ -18,9 +18,9 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private string _extension;
 
-        private static string _destination;
+        private string _metaDataFileName;
 
-        private bool _isRemoveFileEnabled;
+        private static string _destination;
 
         private string _selectedTypItem;
 
@@ -28,20 +28,13 @@ namespace ZbW.Testing.Dms.Client.Model
 
         private DateTime? _valutaDatum;
 
-        public MetadataItem(string benutzer, string bezeichnung, DateTime erfassungsdatum,string originalPath, string filename, string extension, string destinationPath,
-                            bool isRemoveFileEnabled, string selectedTypItem, string stichwoerter, DateTime? valutaDatum)
+        private string _valutaYear;
+
+        private string _contentFilePath;
+
+        public MetadataItem( )
         {
-            _benutzer = benutzer;
-            _bezeichnung = bezeichnung;
-            _erfassungsdatum = erfassungsdatum;
-            _orignalPath = originalPath;
-            _filename = filename;
-            _extension = extension;
-            _destination = destinationPath;
-            _isRemoveFileEnabled = isRemoveFileEnabled;
-            _selectedTypItem = selectedTypItem;
-            _stichwoerter = stichwoerter;
-            _valutaDatum = valutaDatum;
+           
         }
         public string Benutzer
         {
@@ -115,6 +108,18 @@ namespace ZbW.Testing.Dms.Client.Model
             }
         }
 
+        public string MetaDataFileName
+        {
+            get
+            {
+                return _metaDataFileName;
+            }
+            set
+            {
+                SetProperty(ref _metaDataFileName, value);
+            }
+        }
+
         public string Destination
         {
             get
@@ -124,19 +129,6 @@ namespace ZbW.Testing.Dms.Client.Model
             set
             {
                 SetProperty(ref _destination, value);
-            }
-        }
-
-        public bool IsRemoveFileEnable
-        {
-            get
-            {
-                return _isRemoveFileEnabled;
-            }
-
-            set
-            {
-                SetProperty(ref _isRemoveFileEnabled, value);
             }
         }
 
@@ -158,7 +150,19 @@ namespace ZbW.Testing.Dms.Client.Model
             set { SetProperty(ref _valutaDatum, value); }
         }
 
-        //public
+        public string ValutaYear
+        {
+            get { return _valutaYear; }
+            set { SetProperty(ref _valutaYear, value); }
+        }
+
+        public string ContentFilePath
+        {
+            get { return _contentFilePath; }
+            set { SetProperty(ref _contentFilePath, value); }
+        }
+
+       
 
     }
 }

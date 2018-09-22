@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZbW.Testing.Dms.Client.Interfaces;
 
-namespace ZbW.Testing.Dms.Client.Services
+namespace ZbW.Testing.Dms.Client.Provider
 {
-    class FileNameGenerator : IFileNameGenerator
+    internal class FileNameGenerator : IFileNameGenerator
     {
-        public string GenerateGuid()
+        public virtual string NewGuid()
         {
 
             return System.Guid.NewGuid().ToString();

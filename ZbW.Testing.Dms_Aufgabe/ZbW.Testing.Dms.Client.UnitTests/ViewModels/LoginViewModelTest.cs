@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using ZbW.Testing.Dms.Client.ViewModels;
-using ZbW.Testing.Dms.Client.Model;
-
+using ZbW.Testing.Dms.Client.Properties;
 
 
 namespace Unit.ViewModels
@@ -44,7 +38,9 @@ namespace Unit.ViewModels
             var result = loginViewModel.CmdLogin.CanExecute();
 
             //assert
-            Assert.That(result, Is.False);
+            var user = loginViewModel.Benutzername;
+            Assert.That(result, Is.True);
+            Assert.AreEqual(user, Settings.Default.DefaultUser);
         }
 
         //Wird auf den [Abbrechen]-Button gedrückt, wird die Applikation beendet.

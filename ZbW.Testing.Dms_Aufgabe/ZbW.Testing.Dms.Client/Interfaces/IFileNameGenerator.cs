@@ -5,11 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
-namespace ZbW.Testing.Dms.Client.Services
+namespace ZbW.Testing.Dms.Client.Interfaces
 {
     public interface IFileNameGenerator
     {
-        string GenerateGuid();
+        string NewGuid();
+
+        
     }
+
+    
     
 }
