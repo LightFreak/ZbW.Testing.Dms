@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
+using ZbW.Testing.Dms.Client.Properties;
 using ZbW.Testing.Dms.Client.Services;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
@@ -19,6 +20,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
         private ObservableCollection<MetadataItem> _filteredMetadataItems;
         private MetadataItem _selectedMetadataItem;
         private FileOp _fileSystemService;
+        private string _target;
 
         private string _selectedTypItem;
 
@@ -34,7 +36,9 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             CmdReset = new DelegateCommand(OnCmdReset);
             CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
             _fileSystemService = new FileOp();
+            _target = Settings.Default.DefaultRepo;
             _filteredMetadataItems = new ObservableCollection<MetadataItem>();
+            _fileSystemService.GenerateFolderList();
             ShowData();
         }
 
@@ -132,7 +136,22 @@ namespace ZbW.Testing.Dms.Client.ViewModels
             var tempList = new List<MetadataItem>();
             foreach (var m in FilteredMetadataItems)
             {
-                if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()) || m.Stichwoerter.ToLower().Equals(Suchbegriff.ToLower()) || m.SelectedTypItem.Equals(SelectedTypItem))
+                if (m.Stichwoerter != null && Suchbegriff != null)
+                {
+                    if(m.Stichwoerter.ToLower().Equals(Suchbegriff.ToLower()))
+                    {
+                        tempList.Add(m);
+                    }
+                }
+
+                if (m.Bezeichnung != null && Suchbegriff != null)
+                {
+                    if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()))
+                    {
+                        tempList.Add(m);
+                    }
+                }
+                if (m.SelectedTypItem.Equals(SelectedTypItem))
                 {
                     tempList.Add(m);
                 }
@@ -144,7 +163,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
 
         private void ShowData()
         {
-            _fileSystemService = new FileOp();
+            //_fileSystemService = new FileOp();
             var metadataList = _fileSystemService.LoadMetadata();
             foreach (var m in metadataList)
             {

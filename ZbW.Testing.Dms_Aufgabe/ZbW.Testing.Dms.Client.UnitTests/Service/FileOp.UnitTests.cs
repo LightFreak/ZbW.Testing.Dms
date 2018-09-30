@@ -130,51 +130,39 @@ namespace ZbW.Testing.Dms.UnitTests.Service
         }
 
         [Test]
-        public void LoadMetadata_default_ReturnsCorrectList()
+        public void SetDestinationDir_Default_AddingSucessfull()
         {
             // arrange
-            FileOp f = new FileOp();
+            var file = new FileOp();
+            var fileServiceStub = A.Fake<FileServices>();
+            A.CallTo(() => fileServiceStub.DestinationDir(VALID_Year,VALID_Path)).Returns(true);
+            file.Destiny = fileServiceStub;
 
 
             // act
+            file.SetDestinationDir(VALID_Year,VALID_Path);
 
             // assert
+            Assert.That(file.ExtractFolderList().Count,Is.GreaterThanOrEqualTo(1));
         }
 
-        //[Test]
-        //public void CheckDestinationDir_Returns_DoesntExists()
-        //{
-        //    //Arrange
-        //    var fileStub = A.Fake<IFile>();
-        //    A.CallTo(() => fileStub.SetDestinationDir()).returns(false);
+        [Test]
+        public void SetDestinationDir_CallsFileservice_Correct()
+        {
+            // arrange
+            var file = new FileOp();
+            var fileServiceMock = A.Fake<FileServices>();
+            file.Destiny = fileServiceMock;
 
-        //    //Act
-        //    var result = fileStub.SetDestinationDir(VALID_Year, INVALID_Path);
+            // act
+            file.SetDestinationDir(VALID_Year,VALID_Path);
 
-        //    //Assert
-        //    Assert.That(result, Is.False);
+            // assert
+            A.CallTo(() => fileServiceMock.DestinationDir(VALID_Year, VALID_Path)).MustHaveHappenedOnceExactly();
+        }
+        
 
-        //}
-
-
-
-
-
-
-
-        // arrange
-        //var ocrProviderStub = A.Fake<IOcrProvider>();
-        //A.CallTo(() => ocrProviderStub.Analyze(VALID_PATH)).Returns(new AnalyzeResult(FULLTEXT_VALUE, QR_CODE_VALUE));
-
-        //var analyzerViewModel = new AnalyzerViewModel(ocrProviderStub);
-        //analyzerViewModel.FilePath = VALID_PATH;
-
-        //// act
-        //analyzerViewModel.CmdAnalyze.Execute();
-
-        //// assert
-        //Assert.That(analyzerViewModel.ExtractedText, Is.EqualTo(FULLTEXT_VALUE));
-        //Assert.That(analyzerViewModel.QrCodeValue, Is.EqualTo(QR_CODE_VALUE));
+       
 
     }
 }

@@ -18,33 +18,34 @@ namespace ZbW.Testing.Dms.Client.Services
     internal class FileOp 
     {
         private string _target;
-        private static readonly IList<string> DirectoryFolder = new List<string>();
+        private IList<string> DirectoryFolder = new List<string>();
 
         //private FileNameGenerator _fng;
-        private FileServices _file;
-        private XmlService _xml;
+        
+        private XmlService XmlService;
 
         public FileOp()
         {
             _target = Settings.Default.DefaultRepo;
-            _file = new FileServices();
-            _xml = new XmlService();
+            Destiny = new FileServices();
+            XmlService = new XmlService();
             Guid = new FileNameGenerator();
+            
         }
 
-        internal FileServices FileService { private get; set; }
+        internal FileServices Destiny { private get; set; }
         internal XmlService Xml { private get; set; }
         internal FileNameGenerator Guid {private get; set; }
         
         public void CopyFile(MetadataItem source, bool fileRemove)
         {
             source.Destination = _target;
-            SetDestinationDir(_file, source.ValutaYear, _target);
+            SetDestinationDir(source.ValutaYear, _target);
             source.Destination = Path.Combine(_target, source.ValutaYear);
             String[] MyGuid = GenerateFilename(source.Filename,source.Extension);
             source.MetaDataFileName = MyGuid[1];
             source.ContentFilePath = $"{source.Destination}\\{MyGuid[0]}";
-            _xml.MetadataItemToXml(source, source.Destination);
+            XmlService.MetadataItemToXml(source, source.Destination);
             var newFile = source.ContentFilePath;
             File.Copy(source.OriginalPath,newFile);
             
@@ -89,25 +90,35 @@ namespace ZbW.Testing.Dms.Client.Services
             return ret;
         }
         
-        internal void SetDestinationDir(IFile dir, string year, string target)
+        internal void SetDestinationDir(string year, string target)
         {
-            if (dir.SetDestinationDir(year, target))
+            if (Destiny.DestinationDir(year, target))
             {
                 DirectoryFolder.Add(year);
             }
         }
 
+        internal IList<string> ExtractFolderList()
+        {
+            return DirectoryFolder;
+        }
+
+        internal void GenerateFolderList()
+        {
+            DirectoryFolder = Destiny.GetExistingDirectories(_target);
+        }
+
         public IList<MetadataItem> LoadMetadata()
         {
             var metadataFile = GetAllFiles();
-            var metadataList = _xml.XmlToMetadataItems(metadataFile);
+            var metadataList = XmlService.XmlToMetadataItems(metadataFile);
             return metadataList;
         }
 
         private IList<string> GetAllFiles()
         {
 
-            var metadataFile = _file.GetAllFiles(DirectoryFolder, _target);
+            var metadataFile = Destiny.GetAllFiles(DirectoryFolder, _target);
             
             return metadataFile;
         }

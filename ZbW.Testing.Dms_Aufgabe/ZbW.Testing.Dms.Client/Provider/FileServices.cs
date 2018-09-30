@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace ZbW.Testing.Dms.Client.Provider
             Directory.CreateDirectory(destination);
         }
 
-        public bool SetDestinationDir(string year, string target)
+        public virtual bool DestinationDir(string year, string target)
         {
             if(!Directory.Exists(Path.Combine(target,year)))
             {
@@ -48,7 +49,26 @@ namespace ZbW.Testing.Dms.Client.Provider
             }
 
             return metadataFile;
-            // throw new NotImplementedException();
+        }
+
+        public IList<string> GetExistingDirectories(string _target)
+        {
+            IList<string> result = new List<string>();
+            if (_target != null)
+            {
+                
+                IList<string> temp = Directory.GetDirectories(_target);
+                foreach (var dir in temp)
+                {
+                    var position = dir.LastIndexOf(@"\");
+                    if (position != 0)
+                    {
+                        result.Add(dir.Substring(position + 1)); 
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
